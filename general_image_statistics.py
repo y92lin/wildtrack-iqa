@@ -10,7 +10,7 @@ def pixel_brightness(pixel):
 
 def image_brightness(img):
     nr_of_pixels = len(img) * len(img[0])
-    return sum(pixel_brightness(pixel) for pixel in row for row in img) / nr_of_pixels
+    return sum(pixel_brightness(pixel) for row in img for pixel in row ) / nr_of_pixels
 
 
 def blurry(img):

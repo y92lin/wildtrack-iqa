@@ -10,7 +10,7 @@ class NSSADNN(nn.Module):
         self.fc1_4 = nn.Linear(1024, 512)
         self.fc1_5 = nn.Linear(512, 128)
         self.fc1_6 = nn.Linear(128, 64)
-        self.fc1_7 = nn.Linear(64, 1)
+        self.fc1_7 = nn.Linear(64, 5)
 
         self.relu = nn.ReLU()
         self.batchnorm1 = nn.BatchNorm1d(256)
@@ -49,5 +49,5 @@ class NSSADNN(nn.Module):
         x = self.batchnorm6(x)
 
         x = self.fc1_7(x)
-        x = torch.sigmoid(x)
+        #x = torch.sigmoid(x)
         return x

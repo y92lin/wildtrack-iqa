@@ -11,7 +11,7 @@ class WildTrackDataset(Dataset):
     def __init__(self, dataset_file, binary_threshold: 4):
         images = pandas.read_csv(dataset_file)
         brisque_columns = ['feature_' + str(i) for i in range(0, 36)]
-        feature_columns = brisque_columns + ['n_score', 'p_score', 'blurriness', 'brightness','species']
+        feature_columns = brisque_columns + ['n_score', 'p_score', 'brightness', 'blurriness','species']
         image_features = images[feature_columns]
         image_features['species'] = images['species'].apply(lambda x: self.categories[x])
         self.row_count = images.shape[0]

@@ -4,13 +4,13 @@ import torch.nn as nn
 class NSSADNN(nn.Module):
     def __init__(self):
         super(NSSADNN, self).__init__()
-        self.fc1_1 = nn.Linear(39, 256)
+        self.fc1_1 = nn.Linear(42, 256)
         self.fc1_2 = nn.Linear(256, 512)
         self.fc1_3 = nn.Linear(512, 1024)
         self.fc1_4 = nn.Linear(1024, 512)
         self.fc1_5 = nn.Linear(512, 128)
         self.fc1_6 = nn.Linear(128, 64)
-        self.fc1_7 = nn.Linear(64, 5)
+        self.fc1_7 = nn.Linear(64, 1)
 
         self.relu = nn.ReLU()
         self.batchnorm1 = nn.BatchNorm1d(256)
@@ -49,5 +49,5 @@ class NSSADNN(nn.Module):
         x = self.batchnorm6(x)
 
         x = self.fc1_7(x)
-        #x = torch.sigmoid(x)
+        x = torch.sigmoid(x)
         return x

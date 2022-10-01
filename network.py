@@ -4,7 +4,7 @@ import torch.nn as nn
 class NSSADNN(nn.Module):
     def __init__(self):
         super(NSSADNN, self).__init__()
-        self.fc1_1 = nn.Linear(39, 256)
+        self.fc1_1 = nn.Linear(42, 256)
         self.fc1_2 = nn.Linear(256, 512)
         self.fc1_3 = nn.Linear(512, 1024)
         self.fc1_4 = nn.Linear(1024, 512)

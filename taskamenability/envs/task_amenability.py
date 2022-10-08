@@ -49,10 +49,22 @@ class TaskAmenability(gym.Env):
         val_acc_vec = []
         for i in range(len(self.y_val)):
             with torch.no_grad():
-                y_pred = self.task_predictor(self.x_val[i])
-                val_metric = accuracy_score(self.y_val[i], y_pred)
-                val_acc_vec.append(val_metric)
+                obs = self.x_val[i].permute(2, 0, 1).float()
+                y_pred = self.task_predictor(obs)
+                print(y_pred)
+                if  len(y_pred['pred_classes']) == 0:
+                  y_pred = 0
+                else:
+                  to_keep = (y_pred['scores'] > 0.5).nonzero(as_tuple=True)
+                  if len(y_pred['pred_classes'][to_keep]) > 0:
+                    y_pred = 1
+                  else:
+                    y_pred = 0
 
+                print((y_pred, self.y_val[i:i+1]))
+                val_metric = accuracy_score(self.y_val[i:i+1], np.array([y_pred]))
+                val_acc_vec.append(val_metric)
+        print(val_acc_vec)
         return np.array(val_acc_vec)
 
     def step(self, action):

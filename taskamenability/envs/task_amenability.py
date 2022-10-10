@@ -51,7 +51,6 @@ class TaskAmenability(gym.Env):
             with torch.no_grad():
                 obs = self.x_val[i].permute(2, 0, 1).float()
                 y_pred = self.task_predictor(obs)
-                print(y_pred)
                 if  len(y_pred['pred_classes']) == 0:
                   y_pred = 0
                 else:
@@ -61,10 +60,8 @@ class TaskAmenability(gym.Env):
                   else:
                     y_pred = 0
 
-                print((y_pred, self.y_val[i:i+1]))
                 val_metric = accuracy_score(self.y_val[i:i+1], np.array([y_pred]))
                 val_acc_vec.append(val_metric)
-        print(val_acc_vec)
         return np.array(val_acc_vec)
 
     def step(self, action):
@@ -80,17 +77,22 @@ class TaskAmenability(gym.Env):
             moving_avg = self.compute_moving_avg()
             val_acc_vec = self.get_val_acc_vec()
             val_sel_vec = self.actions_list[self.controller_batch_size:]
-            val_sel_vec_normalised = np.array(val_sel_vec) / np.mean(val_sel_vec)
+            mean_val_sel_vec = np.mean(val_sel_vec)
+            if mean_val_sel_vec == 0:
+              val_sel_vec.fill(0)
+              val_sel_vec_normalised = val_sel_vec
+            else:
+              val_sel_vec_normalised = np.array(val_sel_vec) / np.mean(val_sel_vec)
 
             val_metric = np.mean(np.multiply(val_sel_vec_normalised, np.array(val_acc_vec)))
 
             self.val_metric_list.append(val_metric)
             reward = val_metric - moving_avg
             done = True
+            print("Reward: " + str(reward))
             return np.random.rand(self.img_shape[0], self.img_shape[1], self.img_shape[2]), reward, done, {}
 
     def reset(self):
-        print("test this out")
         self.x_train_batch, self.y_train_batch = self.get_batch()
 
         self.x_data = np.concatenate((self.x_train_batch, self.x_val), axis=0)

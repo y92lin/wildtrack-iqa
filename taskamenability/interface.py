@@ -67,8 +67,8 @@ class PPOInterface():
 
     def save(self, controller_save_path, task_predictor_save_path):
         self.model.save(controller_save_path)
-        task_predictor_copy = self.env.get_attr('task_predictor')[0]
-        task_predictor_copy.save(task_predictor_save_path)
+        #task_predictor_copy = self.env.get_attr('task_predictor')[0]
+        #task_predictor_copy.save(task_predictor_save_path)
 
     def load(self, save_path):
         self.model = PPO2.load(save_path)

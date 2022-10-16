@@ -27,7 +27,7 @@ class TaskAmenability(gym.Env):
 
         self.num_val = len(self.x_val)
 
-        self.observation_space = spaces.Box(low=0, high=1, shape=self.img_shape, dtype=np.float32)
+        self.observation_space = spaces.Box(low=0, high=14, shape=self.img_shape, dtype=np.float32)
         self.action_space = spaces.Box(low=0, high=1, shape=(1,), dtype=np.float32)
 
         self.actions_list = []
@@ -49,17 +49,9 @@ class TaskAmenability(gym.Env):
         val_acc_vec = []
         for i in range(len(self.y_val)):
             with torch.no_grad():
-                obs = self.x_val[i].permute(2, 0, 1).float()
+                obs = self.x_val[i].permute(2, 0, 1).unsqueeze(dim=0).float()
                 y_pred = self.task_predictor(obs)
-                if  len(y_pred['pred_classes']) == 0:
-                  y_pred = 0
-                else:
-                  to_keep = (y_pred['scores'] > 0.5).nonzero(as_tuple=True)
-                  if len(y_pred['pred_classes'][to_keep]) > 0:
-                    y_pred = 1
-                  else:
-                    y_pred = 0
-
+                y_pred = y_pred.argmax(dim=1).squeeze().item()
                 val_metric = accuracy_score(self.y_val[i:i+1], np.array([y_pred]))
                 val_acc_vec.append(val_metric)
         return np.array(val_acc_vec)
@@ -79,7 +71,7 @@ class TaskAmenability(gym.Env):
             val_sel_vec = self.actions_list[self.controller_batch_size:]
             mean_val_sel_vec = np.mean(val_sel_vec)
             if mean_val_sel_vec == 0:
-              val_sel_vec.fill(0)
+              val_sel_vec = np.full((1, len(self.actions_list)),0)
               val_sel_vec_normalised = val_sel_vec
             else:
               val_sel_vec_normalised = np.array(val_sel_vec) / np.mean(val_sel_vec)

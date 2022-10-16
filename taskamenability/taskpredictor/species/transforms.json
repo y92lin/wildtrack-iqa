@@ -1,0 +1,1 @@
+{"__version__": "1.1.0", "transform": {"__class_fullname__": "Compose", "p": 1.0, "transforms": [{"__class_fullname__": "Resize", "always_apply": false, "p": 1, "height": 512, "width": 512, "interpolation": 1}], "bbox_params": null, "keypoint_params": null, "additional_targets": {}}}

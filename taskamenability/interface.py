@@ -48,7 +48,8 @@ class PPOInterface():
                               n_steps=self.n_rollout_steps,
                               gamma=1.0,
                               verbose=2,
-                              seed=None)
+                              seed=None,
+                              learning_rate=0.00010)
 
     def train(self, num_episodes):
         time_steps = int(num_episodes * self.n_rollout_steps)

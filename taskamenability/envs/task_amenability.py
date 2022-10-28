@@ -29,6 +29,7 @@ class TaskAmenability(gym.Env):
 
         self.observation_space = spaces.Box(low=0, high=14, shape=self.img_shape, dtype=np.float32)
         self.action_space = spaces.Box(low=0, high=1, shape=(1,), dtype=np.float32)
+        self.reward_range =  [-1, +1]
 
         self.actions_list = []
         self.val_metric_list = [0.5] * 10

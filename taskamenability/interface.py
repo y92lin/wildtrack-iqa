@@ -51,7 +51,7 @@ class PPOInterface():
 
     def train(self, num_episodes):
 
-        callback = SaveOnBestTrainingRewardCallback(check_freq=10, log_dir=self.log_dir)
+        callback = SaveOnBestTrainingRewardCallback(check_freq=100, log_dir=self.log_dir)
         time_steps = int(num_episodes * self.n_rollout_steps)
         print(f'Training started for {num_episodes} episodes:')
         self.model.learn(total_timesteps=time_steps, callback=callback)

@@ -19,7 +19,7 @@ class TaskAmenability(gym.Env):
         self.img_shape = img_shape
         self.task_predictor = task_predictor
 
-        self.controller_batch_size = 16
+        self.controller_batch_size = 32
         self.task_predictor_batch_size = 4
         self.epochs_per_batch = 2
 
@@ -30,7 +30,7 @@ class TaskAmenability(gym.Env):
         self.reward_range =  [-1, +1]
 
         self.actions_list = []
-        self.val_metric_list = [0.5] * 10
+        self.val_metric_list = [0.4] * 10
 
         self.sample_num_count = 0
 
@@ -59,11 +59,10 @@ class TaskAmenability(gym.Env):
         self.actions_list.append(action)
         self.sample_num_count += 1
 
-        if self.sample_num_count < self.controller_batch_size:
+        if self.sample_num_count <= self.controller_batch_size:
             reward = 0
             done = False
-            return self.x_data[self.sample_num_count], reward, done, {}
-
+            return self.x_data[self.sample_num_count - 1], reward, done, {}
         else:
             moving_avg = self.compute_moving_avg()
             val_acc_vec = self.get_val_acc_vec()
@@ -72,10 +71,8 @@ class TaskAmenability(gym.Env):
             val_metric = np.mean(np.array([1 if sel == acc else 0 for sel, acc in zip(val_sel_vec, val_acc_vec)]))
             self.val_metric_list.append(val_metric)
 
-            print("Accuracy")
-            print(val_acc_vec)
-            print("Quality")
-            print(val_sel_vec)
+            print("Performance Accuracy")
+            print(val_metric)
             reward = val_metric - moving_avg
             done = True
             print("Reward: " + str(reward))

@@ -1,0 +1,109 @@
+MODEL:
+  NAME: Faster R-CNN
+  ROI_HEADS:
+    IN_FEATURES:
+    - p2
+    - p3
+    - p4
+    - p5
+    - p6
+    NAME: StandardROIHeads
+    NUM_CLASSES: 1
+  RPN:
+    IN_FEATURES:
+    - p2
+    - p3
+    - p4
+    - p5
+    - p6
+    IOU_THRESHOLDS:
+    - 0.3
+    - 0.5
+    POST_NMS_TOPK_TEST: 1000
+    POST_NMS_TOPK_TRAIN: 1000
+    PRE_NMS_TOPK_TEST: 2000
+    PRE_NMS_TOPK_TRAIN: 4000
+  ANCHOR_GENERATOR:
+    ASPECT_RATIOS:
+    - - 0.5
+      - 1.0
+      - 2.0
+    SIZES:
+    - - 32
+    - - 64
+    - - 128
+    - - 256
+    - - 512
+  BACKBONE:
+    NAME: build_resnet_fpn_backbone
+    FREEZE_AT: 2
+  RESNETS:
+    OUT_FEATURES:
+    - res2
+    - res3
+    - res4
+    - res5
+    DEPTH: 50
+  ROI_BOX_HEAD:
+    NAME: FastRCNNConvFCHead
+    NUM_FC: 2
+    POOLER_RESOLUTION: 7
+    POOLER_SAMPLING_RATIO: 2
+  MASK_ON: false
+  META_ARCHITECTURE: GeneralizedRCNN
+  TYPE: FasterRCNN
+  WEIGHTS: weights/model.pt
+  PROPOSAL_GENERATOR:
+    NAME: RPN
+GLOBAL:
+  FAMILY: detector
+  SEED: 2021
+DATALOADER:
+  TRAIN:
+    BATCH_SIZE: 32
+    CACHING_IMG_SIZE: 1600
+    NUM_WORKERS: 0
+  TEST:
+    NUM_WORKERS: 0
+    BATCH_SIZE: 4
+    CACHING_IMG_SIZE: 1600
+TRAIN:
+  EARLY_STOPPING:
+    MIN_DELTA: 0.0
+    METRIC:
+      NAME: AverageLoss
+    PATIENCE: 1000
+  EVAL_PERIOD: 50
+  METRICS:
+  - NAME: mAP
+  - NAME: AverageLoss
+  - NAME: AverageLoss
+  ITERATIONS: 2001
+SOLVER:
+  NAME: AdamW
+  AMSGRAD: false
+  BETAS:
+  - 0.9
+  - 0.999
+  EPS: 1.0e-08
+  LR: 0.0001
+  WEIGHT_DECAY: 0.01
+SCHEDULER:
+  NAME: None
+LOSS:
+  NAME: CombinedDetectionLoss
+INPUT:
+  TEST:
+    TRANSFORMS:
+    - NAME: SmallestMaxSize
+      INTERPOLATION: 1
+      MAX_SIZE:
+      - 416
+      P: 1
+  TRAIN:
+    TRANSFORMS:
+    - NAME: SmallestMaxSize
+      INTERPOLATION: 1
+      MAX_SIZE:
+      - 416
+      P: 1

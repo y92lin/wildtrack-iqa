@@ -1,0 +1,67 @@
+MODEL:
+  NAME: ResNet
+  AS_ENCODER: false
+  NUM_CLASSES: 15
+  OUT_CHANNELS: 5
+  QUANTIZE: false
+  TYPE: resnet18
+  WEIGHTS: weights/model.pt
+GLOBAL:
+  FAMILY: classifier
+  SEED: 2021
+DATALOADER:
+  TRAIN:
+    NUM_WORKERS: 3
+    BATCH_SIZE: 64
+  TEST:
+    NUM_WORKERS: 3
+    BATCH_SIZE: 24
+TRAIN:
+  EARLY_STOPPING:
+    MIN_DELTA: 0.5
+    METRIC:
+      NAME: Accuracy
+    PATIENCE: 3
+  EVAL_PERIOD: 50
+  METRICS:
+  - NAME: Accuracy
+  - NAME: Loss
+  - NAME: Loss
+  ITERATIONS: 1001
+SOLVER:
+  NAME: AdamW
+  AMSGRAD: false
+  BETAS:
+  - 0.9
+  - 0.999
+  EPS: 1.0e-08
+  WEIGHT_DECAY: 0.01
+  LR: 0.0001
+LOSS:
+  NAME: CrossEntropyLoss
+INPUT:
+  TEST:
+    TRANSFORMS:
+    - NAME: Resize
+      INTERPOLATION: 1
+      P: 1
+      WIDTH: 512
+      HEIGHT: 512
+  TRAIN:
+    TRANSFORMS:
+    - NAME: Resize
+      HEIGHT: 512
+      INTERPOLATION: 1
+      P: 1
+      WIDTH: 512
+SCHEDULER:
+  NAME: ReduceLROnPlateau
+  COOLDOWN: 0
+  EPS: 1.0e-08
+  FACTOR: 0.1
+  MIN_LR: 0
+  MODE: min
+  PATIENCE: 10
+  THRESHOLD: 0.0001
+  THRESHOLD_MODE: rel
+  VERBOSE: false

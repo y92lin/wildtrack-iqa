@@ -33,8 +33,8 @@ class PPOInterface():
         def get_from_env(env, parameter):
             return env.get_attr(parameter)[0]
 
-        self.n_rollout_steps = get_from_env(self.env, 'controller_batch_size') + len(get_from_env(self.env,
-                                                                                                  'x_val'))  # number of steps per episode (controller_batch_size + val_set_len) multiply by an integer to do multiple episodes before controller update
+        # number of steps per episode (controller_batch_size ) multiply by an integer to do multiple episodes before controller update  # number of steps per episode (controller_batch_size + val_set_len) multiply by an integer to do multiple episodes before controller update
+        self.n_rollout_steps = get_from_env(self.env, 'controller_batch_size')
 
         if load_models:
             assert isinstance(controller_save_path, str)

@@ -33,8 +33,8 @@ class PPOInterface():
         def get_from_env(env, parameter):
             return env.get_attr(parameter)[0]
 
-        self.n_rollout_steps = get_from_env(self.env, 'controller_batch_size') + len(get_from_env(self.env,
-                                                                                                  'x_val'))  # number of steps per episode (controller_batch_size + val_set_len) multiply by an integer to do multiple episodes before controller update
+        # number of steps per episode (controller_batch_size ) multiply by an integer to do multiple episodes before controller update  # number of steps per episode (controller_batch_size + val_set_len) multiply by an integer to do multiple episodes before controller update
+        self.n_rollout_steps = get_from_env(self.env, 'controller_batch_size')
 
         if load_models:
             assert isinstance(controller_save_path, str)
@@ -51,7 +51,7 @@ class PPOInterface():
 
     def train(self, num_episodes):
 
-        callback = SaveOnBestTrainingRewardCallback(check_freq=100, log_dir=self.log_dir)
+        callback = SaveOnBestTrainingRewardCallback(check_freq=10, log_dir=self.log_dir)
         time_steps = int(num_episodes * self.n_rollout_steps)
         print(f'Training started for {num_episodes} episodes:')
         self.model.learn(total_timesteps=time_steps, callback=callback)

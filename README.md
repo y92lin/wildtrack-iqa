@@ -12,6 +12,8 @@ That data was then leveraged in baseline model development
 
 [cluster_analysis.ipynb](cluster_analysis.ipynb) - Used to analyze any trends in natural scene statistic features of images which could be used in modeling
 
+[Incorrect_classifications.ipynb](Incorrect_classifications.ipynb) - Analysis of subjective scoring performance against existing species classification model
+
 ## Data Modeling and Experimentation:
 
 [wildtrack_multitask_train.ipynb](wildtrack_multitask_train.ipynb) - Baseline model development notebook (attempted multitaks and basic CNN)

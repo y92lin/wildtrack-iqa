@@ -16,7 +16,9 @@ That data was then leveraged in baseline model development
 
 ## Data Modeling and Experimentation:
 
-[wildtrack_multitask_train.ipynb](wildtrack_multitask_train.ipynb) - Baseline model development notebook (attempted multitaks and basic CNN)
+[wildtrack_multitask_train.ipynb](wildtrack_multitask_train.ipynb) - Baseline model development notebook (attempted multitask and basic CNN)
+
+[variational_autoencoder_quality_assessment.ipynb](variational_autoencoder_quality_assessment.ipynb) - Variational Autoencoder method model development notebook
 
 [task_amenablity_species.ipynb](task_amenability_species.ipynb) - Reinforcement Learning model development which will score images based on task amenability (classifying image baed on success downstream, e.g. species classification)
 

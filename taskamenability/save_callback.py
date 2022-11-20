@@ -21,7 +21,7 @@ class SaveOnBestTrainingRewardCallback(BaseCallback):
         self.check_freq = check_freq
         self.log_dir = log_dir
         self.save_path = os.path.join(log_dir, 'best_model')
-        self.best_mean_reward = -np.inf
+        self.best_reward = -np.inf
 
     def _init_callback(self) -> None:
         # Create folder if needed
@@ -34,15 +34,15 @@ class SaveOnBestTrainingRewardCallback(BaseCallback):
           # Retrieve training reward
           x, y = ts2xy(load_results(self.log_dir), 'timesteps')
           if len(x) > 0:
-              # Mean training reward over the last 100 episodes
-              mean_reward = np.mean(y[-10:])
+
+              reward = y[-1]
               if self.verbose > 0:
                 print("Num timesteps: {}".format(self.num_timesteps))
-                print("Best mean reward: {:.2f} - Last mean reward per episode: {:.2f}".format(self.best_mean_reward, mean_reward))
+                print("Best reward: {:.2f} - Last reward per episode: {:.2f}".format(self.best_reward, reward))
 
               # New best model, you could save the agent here
-              if mean_reward > self.best_mean_reward:
-                  self.best_mean_reward = mean_reward
+              if reward > self.best_reward:
+                  self.best_reward = reward
                   # Example for saving best model
                   if self.verbose > 0:
                     print("Saving new best model to {}".format(self.save_path))

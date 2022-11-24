@@ -17,9 +17,9 @@ class WildTrackDataset(Dataset):
         self.row_count = images.shape[0]
 
         # get rating
-        self.mos = images["subj_score"].to_numpy()
-        self.mos = images["subj_score"] - 1
-        self.mos = np.select([(self.mos < binary_threshold), (self.mos >= binary_threshold)],[0,1])
+        self.mos = images["class_performance"].to_numpy()
+        #self.mos = images["class_performance"] - 1
+        #self.mos = np.select([(self.mos < binary_threshold), (self.mos >= binary_threshold)],[0,1])
         self.features = []
         self.label = []
 

@@ -14,11 +14,11 @@ That data was then leveraged in baseline model development
 
 ## Data Modeling and Experimentation:
 
-[wildtrack_multitask_train.ipynb](wildtrack_multitask_train.ipynb) - Baseline model development notebook (attempted multitask and basic CNN)
+[brisque_downstream_model.ipynb](brisque_downstream_model.ipynb) - Baseline model development notebook leverating natural statistics measures to predict image quality based on downstream classification performance
 
-[variational_autoencoder_quality_assessment.ipynb](variational_autoencoder_quality_assessment.ipynb) - Variational Autoencoder method model development notebook
+[variational_autoencoder_quality_assessment.ipynb](variational_autoencoder_quality_assessment.ipynb) - Variational Autoencoder method model development notebook. This model focusing on training a model on classifable images in order to detect unclassifiable images as anomalies
 
-[task_amenablity_species.ipynb](task_amenability_species.ipynb) - Reinforcement Learning model development which will score images based on task amenability (classifying image baed on success downstream, e.g. species classification)
+[task_amenablity_species.ipynb](task_amenability_species.ipynb) - Reinforcement Learning model development which will and agent to score images based on downstream classification task  (classifying image baed on success downstream, e.g. species classification)
 
 ## Proposed Final Model
 [IQA.ipynb](IQA.ipynb) - Notebook supporting final model evaluation, with inference example using sampled image data. 
